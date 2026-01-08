@@ -18,6 +18,8 @@ import java.util.List;
 class JsonFileManager {
     private final String filePath;
     ObjectMapper objectMapper;
+    List<CpuMetric> metrics = null;
+    File file = null;
 
     /**
      * Initialise le gestionnaire et vérifie l'existence du fichier.
@@ -49,14 +51,20 @@ class JsonFileManager {
      */
     public void saveMetric(CpuMetric metric){
         try{
-            File file = new File(this.filePath);
+            file = new File(this.filePath);
             TypeReference<List<CpuMetric>> typeRef = new TypeReference<List<CpuMetric>>() {};
-            List<CpuMetric> metrics = objectMapper.readValue(file, typeRef);
-            metrics.add(metric);
-            objectMapper.writeValue(file, metrics);
+            metrics = objectMapper.readValue(file, typeRef);
+
         }catch(IOException e){
             System.err.println("Une erreur a été rencontrée" + e.getMessage());
             e.printStackTrace();
+            metrics = new ArrayList<CpuMetric>();
+        }
+        metrics.add(metric);
+        try {
+            objectMapper.writeValue(file, metrics);
+        }catch (IOException e){
+            return;
         }
     }
 
