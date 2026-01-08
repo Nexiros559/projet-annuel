@@ -8,10 +8,22 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Gère la persistance des données au format JSON.
+ * <p>
+ * Cette classe utilise la bibliothèque Jackson pour lire et écrire des listes
+ * d'objets {@link CpuMetric} dans un fichier local.
+ * </p>
+ */
 class JsonFileManager {
     private final String filePath;
     ObjectMapper objectMapper;
 
+    /**
+     * Initialise le gestionnaire et vérifie l'existence du fichier.
+     * Si le fichier n'existe pas, il est créé avec une liste vide [].
+     * * @param filePath Le chemin vers le fichier JSON de stockage.
+     */
     JsonFileManager(String filePath) {
         this.filePath = filePath;
         this.objectMapper = new ObjectMapper();
@@ -30,6 +42,11 @@ class JsonFileManager {
         }
     }
 
+    /**
+     * Enregistre une nouvelle métrique en l'ajoutant à l'historique existant.
+     * La méthode charge le fichier, ajoute l'élément, puis réécrit tout le contenu.
+     * * @param metric L'objet {@link CpuMetric} à sauvegarder.
+     */
     public void saveMetric(CpuMetric metric){
         try{
             File file = new File(this.filePath);
@@ -43,6 +60,11 @@ class JsonFileManager {
         }
     }
 
+    /**
+     * Lit l'intégralité du fichier JSON et le transforme en liste d'objets Java.
+     * * @return Une {@link List} contenant toutes les métriques enregistrées.
+     * Retourne une liste vide en cas d'erreur de lecture.
+     */
     public List<CpuMetric> readAllMetrics() {
         File file = new File(this.filePath);
         try{

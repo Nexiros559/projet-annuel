@@ -2,6 +2,13 @@ package org.example;
 
 import java.util.List;
 
+/**
+ * Orchestrateur principal de l'application de monitoring.
+ * <p>
+ * Cette classe gère la boucle principale, l'intervalle de mesure (1s)
+ * et la fréquence de génération des rapports statistiques (5s).
+ * </p>
+ */
 public class MonitorApp {
     private final MetricEngine engine = new MetricEngine();
     private final JsonFileManager jsonFileManager;
@@ -10,6 +17,14 @@ public class MonitorApp {
         this.jsonFileManager = jsonFileManager;
     }
 
+    /**
+     * Démarre la boucle infinie de monitoring.
+     * <p>
+     * À chaque itération, l'application capture une donnée, l'enregistre via le
+     * {@link JsonFileManager} et incrémente un compteur pour afficher une
+     * moyenne glissante toutes les 5 secondes.
+     * </p>
+     */
     public void start() {
         int tickCount = 0;
         System.out.println("--- Démarrage du Monitoring Simulé ---");
@@ -42,6 +57,11 @@ public class MonitorApp {
             }
         }
     }
+
+    /**
+     * Récupère l'historique et calcule les moyennes de température et de charge.
+     * Utilise les Java Streams pour le calcul statistique.
+     */
     public void calculateAndDisplayAverage(){
         List<CpuMetric> allMetrics = jsonFileManager.readAllMetrics();
 
