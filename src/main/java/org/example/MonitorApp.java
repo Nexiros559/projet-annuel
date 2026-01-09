@@ -1,5 +1,6 @@
 package org.example;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -17,13 +18,16 @@ public class MonitorApp {
     private final JsonFileManager jsonFileManager;
     int tickCount = 0;
     ScheduledExecutorService scheduler;
+    List<MonitorListener> listeners = new ArrayList<>();
 
 
     public MonitorApp(JsonFileManager jsonFileManager) {
-
         this.jsonFileManager = jsonFileManager;
     }
 
+    public void addListener(MonitorListener listener){
+        listeners.add(listener);
+    }
 
     /**
      * Récupère l'historique et calcule les moyennes de température et de charge.
@@ -63,6 +67,9 @@ public class MonitorApp {
             public void run() {
                 try{
                     CpuMetric machine = engine.generateMeasure();
+                    for (MonitorListener listener : listeners){
+                        listener.onMeasureReceived(machine);
+                    }
                     jsonFileManager.saveMetric(machine);
                     System.out.printf("Température : %.2f°C | CpuLoad: %.1f%% | [%tT] %n",
                             machine.temperature(), machine.cpuLoad() * 100, machine.timestamp());
