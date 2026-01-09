@@ -20,14 +20,22 @@ public class MonitorApp {
     ScheduledExecutorService scheduler;
     List<MonitorListener> listeners = new ArrayList<>();
 
-
+    /**
+     * Construceur
+     * @param jsonFileManager
+     */
     public MonitorApp(JsonFileManager jsonFileManager) {
         this.jsonFileManager = jsonFileManager;
     }
 
+    /**
+     * Méthode pour relier le backend et la future UI
+     * @param listener
+     */
     public void addListener(MonitorListener listener){
         listeners.add(listener);
     }
+
 
     /**
      * Récupère l'historique et calcule les moyennes de température et de charge.
@@ -54,6 +62,8 @@ public class MonitorApp {
      * À chaque itération, l'application capture une donnée, l'enregistre via le
      * {@link JsonFileManager} et incrémente un compteur pour afficher une
      * moyenne glissante toutes les 5 secondes.
+     * Pour chaque objet de la liste, listener envoie l'objet 'machine' à MonitorListener
+     * pour pouvoir l'afficher dans l'UI plutôt que la console
      * </p>
      */
     public void start() {
@@ -94,5 +104,11 @@ public class MonitorApp {
         }; //Final Runnable
 
         this.scheduler.scheduleAtFixedRate(Instructions, 1, 1, TimeUnit.SECONDS);
+    }
+
+    public void stop(){
+        if(scheduler != null){
+            scheduler.shutdown();
+        }
     }
 }
