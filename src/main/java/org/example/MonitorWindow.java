@@ -3,11 +3,14 @@ package org.example;
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+import java.beans.EventHandler;
 
 public class MonitorWindow extends Application {
     @Override
@@ -19,12 +22,24 @@ public class MonitorWindow extends Application {
         Label loadValue = new Label("--");
         ProgressBar tempBar = new ProgressBar();
         ProgressBar loadBar = new ProgressBar();
+        Button buttonStop = new Button("Stop Engine");
+        Button buttonStart = new Button("Start Engine");
+        JsonFileManager jsonFileManager = new JsonFileManager("data/metrics.json");
+        OshiEngine engine = new OshiEngine();
+
+
 
         GridPane grid = new GridPane();
         grid.setHgap(50);
         grid.setVgap(20);
         loadBar.setMinWidth(150);
         tempBar.setMinWidth(150);
+        buttonStop.setOnAction(actionEvent -> {
+            engine.stopOshiEngine();
+        });
+        buttonStart.setOnAction(actionEvent -> {
+            engine.start();
+        });
 
         grid.add(tempTitle, 0, 0);
         grid.add(loadTitle,1, 0);
@@ -32,15 +47,14 @@ public class MonitorWindow extends Application {
         grid.add(loadValue, 1, 1);
         grid.add(tempBar,0, 2 );
         grid.add(loadBar, 1, 2);
+        grid.add(buttonStop,1, 3 );
+        grid.add(buttonStart, 0, 3);
         GridPane.setHalignment(tempTitle, HPos.CENTER);
         GridPane.setHalignment(tempValue, HPos.CENTER);
         GridPane.setHalignment(tempBar, HPos.CENTER);
         GridPane.setHalignment(loadTitle, HPos.CENTER);
         GridPane.setHalignment(loadValue, HPos.CENTER);
         GridPane.setHalignment(loadBar, HPos.CENTER);
-
-        JsonFileManager jsonFileManager = new JsonFileManager("metrics.json");
-        MonitorApp engine = new MonitorApp(jsonFileManager);
 
         engine.addListener(metric -> {javafx.application.Platform.runLater(()-> {
             tempValue.setText(String.format("%.1f°C", metric.temperature()));
@@ -67,7 +81,7 @@ public class MonitorWindow extends Application {
 
         engine.start();
 
-        stage.setOnCloseRequest(event -> engine.stop());
+        stage.setOnCloseRequest(event -> engine.stopOshiEngine());
 
         Scene scene = new Scene(grid, 400, 300);
         stage.setTitle("Moniteur CPU");
