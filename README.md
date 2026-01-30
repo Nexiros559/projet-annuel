@@ -56,7 +56,7 @@ cd projet-annuel
 Utilisez Docker Compose pour construire et lancer tous les services en une commande :
 Bash
 
-docker compose up --build
+docker compose -f docker-compose.prod.yml up -d
 
 L'initialisation peut prendre environ 30 secondes le temps que Kafka et InfluxDB soient opérationnels.
 3. Accéder au Dashboard
