@@ -32,7 +32,8 @@ Le système est orchestré par Docker Compose et se compose de modules autonomes
 
     Web Dashboard : Interface responsive (Bootstrap/Chart.js) pour la visualisation des alertes et graphiques.
 
-    ```mermaid
+    
+```mermaid
 graph LR
     P[🖥️ Producer Agent] -- JSON --> K((Apache Kafka))
     K -- Stream --> C[⚙️ Consumer Service]
