@@ -24,11 +24,11 @@ Le système est orchestré par Docker Compose et se compose de modules autonomes
 
 ```mermaid
 graph LR
-    P[🖥️ Producer Agent] -- "Envoie Metrics" --> K((Apache Kafka))
-    K -- "Topic: metrics" --> C[⚙️ Consumer Service]
-    C -- "Write Points" --> I[(InfluxDB)]
-    I -. "Lecture Data" .-> A[🌐 REST API]
-    A -- "Fetch JSON" --> D[💻 Web Dashboard]
+    P[🖥️ Producer Agent] -- JSON --> K((Apache Kafka))
+    K -- Stream --> C[⚙️ Consumer Service]
+    C -- Write --> I[(InfluxDB)]
+    I -. Read .-> A[🌐 REST API]
+    A -- Fetch --> D[💻 Web Dashboard]
 
     Producer (Agent) : Collecte les métriques hardware (CPU, RAM, Disque) via la librairie Oshi et les publie dans Kafka avec une clé de partitionnement (hostname).
 
