@@ -2,7 +2,6 @@
 
 ![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-![Kafka](https://img.shields.io/badge/Apache_Kafka-231F20?style=for-the-badge&logo=apachekafka&logoColor=white)
 ![InfluxDB](https://img.shields.io/badge/InfluxDB-22ADF6?style=for-the-badge&logo=influxdb&logoColor=white)
 
 **Nexiros Monitor** est une solution complète de surveillance système (Hardware Monitoring) basée sur une architecture microservices distribuée et résiliente.
@@ -24,11 +23,11 @@ Le système est orchestré par Docker Compose et se compose de modules autonomes
 
 ```mermaid
 graph LR
-    P[🖥️ Producer Agent] -- "Envoie Metrics (JSON)" --> K((Apache Kafka))
+    P[🖥️ Producer Agent] -- "Envoie Metrics" --> K((Apache Kafka))
     K -- "Topic: metrics" --> C[⚙️ Consumer Service]
     C -- "Write Points" --> I[(InfluxDB)]
-    I <. "Query Data" .> A[🌐 REST API]
-    A <-- "Fetch" --> D[💻 Web Dashboard]
+    I -. "Lecture Data" .-> A[🌐 REST API]
+    A -- "Fetch JSON" --> D[💻 Web Dashboard]
 
     Producer (Agent) : Collecte les métriques hardware (CPU, RAM, Disque) via la librairie Oshi et les publie dans Kafka avec une clé de partitionnement (hostname).
 
