@@ -100,4 +100,4 @@ Ouvrez votre navigateur sur :
 
 👤 Auteur
 
-Nexiros - Étudiant en Architecture Logicielle
+Nexiros - Étudiant en Architecture Informatique
