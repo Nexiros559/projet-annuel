@@ -13,7 +13,7 @@ Contrairement aux solutions monolithiques classiques, ce projet utilise un **bus
 
 ## 📸 Aperçu du Dashboard
 
-![Dashboard Preview](dashboard.png)
+![Dashboard Preview](Dashboard.png)
 *Visualisation en temps réel : Température CPU, Charge système, RAM et Disque via l'interface Web.*
 
 ---
